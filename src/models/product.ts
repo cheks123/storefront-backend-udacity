@@ -1,14 +1,19 @@
 import client from "../database";
 
-export type Product = {
-    id : number;
+export type ProductType = {
     name: string;
     price: number;
 
 }
 
+export type createdProduct = {
+    id: number;
+    name: string;
+    price: number;
+}
+
 export class Products{
-    async index():Promise<Product[]>{
+    async index():Promise<ProductType[]>{
         try{
             const conn = await client.connect()
             const sql = 'SELECT * FROM products'
@@ -21,7 +26,7 @@ export class Products{
         }
     }
 
-    async show(id:string):Promise<Product>{
+    async show(id:string):Promise<ProductType>{
         
         try{
             const conn = await client.connect()
@@ -36,7 +41,8 @@ export class Products{
         }
     }
 
-    async create(p:Product):Promise<Product>{
+    async create(p:ProductType):Promise<createdProduct>{
+        console.log("++++++++ correct ++++")
         try{
             const conn = await client.connect()
             const sql = 'INSERT INTO products (name, price) VALUES ($1, $2) RETURNING *'
@@ -46,7 +52,7 @@ export class Products{
 
         }
         catch(err){
-            throw new Error(`Could not add new book ${p.id}. Error: ${err}`)
+            throw new Error(`Could not add new book ${p.name}. Error: ${err}`)
         }
     }
 

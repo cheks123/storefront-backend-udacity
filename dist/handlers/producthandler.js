@@ -48,12 +48,9 @@ var getProducts = function (_req, res) { return __awaiter(void 0, void 0, void 0
     var products;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, product.index()
-                //const products =[{name:"Peak Milk", price:500}, {name:"Bread", price:300}]
-            ];
+            case 0: return [4 /*yield*/, product.index()];
             case 1:
                 products = _a.sent();
-                //const products =[{name:"Peak Milk", price:500}, {name:"Bread", price:300}]
                 res.json(products);
                 return [2 /*return*/];
         }

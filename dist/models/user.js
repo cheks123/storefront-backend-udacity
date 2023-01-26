@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 exports.__esModule = true;
 exports.Users = void 0;
 var database_1 = __importDefault(require("../database"));
+var bcryptjs_1 = __importDefault(require("bcryptjs"));
 var Users = /** @class */ (function () {
     function Users() {
     }
@@ -94,7 +95,7 @@ var Users = /** @class */ (function () {
     };
     Users.prototype.create = function (u) {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result, err_3;
+            var conn, sql, hashed_password, result, err_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -103,15 +104,41 @@ var Users = /** @class */ (function () {
                     case 1:
                         conn = _a.sent();
                         sql = 'INSERT INTO users (first_name, last_name, password) VALUES ($1, $2, $3) RETURNING *';
-                        return [4 /*yield*/, conn.query(sql, [u.firstName, u.lastName, u.password])];
+                        hashed_password = bcryptjs_1["default"].hashSync(u.password + process.env.PEPPER, parseInt(process.env.SALT));
+                        return [4 /*yield*/, conn.query(sql, [u.first_name, u.last_name, hashed_password])];
                     case 2:
                         result = _a.sent();
                         conn.release();
                         return [2 /*return*/, result.rows[0]];
                     case 3:
                         err_3 = _a.sent();
-                        throw new Error("Could not add new book ".concat(u.firstName, ". Error: ").concat(err_3));
+                        throw new Error("Could not add new book ".concat(u.first_name, ". Error: ").concat(err_3));
                     case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Users.prototype.authenticate = function (first_name, password) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result, user;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = 'SELECT * FROM users WHERE first_name=($1)';
+                        return [4 /*yield*/, conn.query(sql, [first_name])];
+                    case 2:
+                        result = _a.sent();
+                        console.log(password + process.env.PEPPER);
+                        if (result.rows.length) {
+                            user = result.rows[0];
+                            console.log(user);
+                            if (bcryptjs_1["default"].compareSync(password + process.env.PEPPER, user.password)) {
+                                return [2 /*return*/, user];
+                            }
+                        }
+                        return [2 /*return*/, null];
                 }
             });
         });

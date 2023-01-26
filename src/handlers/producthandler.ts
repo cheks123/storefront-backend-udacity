@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import { Products, Product } from "../models/product";
-import * as jwt from "jsonwebtoken"
+import { Products, ProductType } from "../models/product";
 import dotenv from "dotenv"
 
 dotenv.config()
@@ -11,7 +10,6 @@ const product = new Products()
 
 export const getProducts = async(_req:Request, res:Response) =>{
     const products = await product.index()
-    //const products =[{name:"Peak Milk", price:500}, {name:"Bread", price:300}]
     res.json(products)
 
 }

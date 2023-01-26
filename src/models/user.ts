@@ -1,14 +1,14 @@
 import client from "../database";
+import bcrypt from "bcryptjs"
 
-export type UserType = {
-    id : number;
-    firstName : string;
-    lastName : string;
+export type userType = {
+    first_name : string;
+    last_name : string;
     password : string;
 }
 
 export class Users{
-    async index():Promise<UserType[]>{
+    async index():Promise<userType[]>{
         try{
             const conn = await client.connect()
             const sql = 'SELECT * FROM users'
@@ -21,7 +21,7 @@ export class Users{
         }
     }
 
-    async show(id:string):Promise<UserType>{
+    async show(id:string):Promise<userType>{
         try{
             const conn = await client.connect()
             const sql = 'SELECT * FROM users WHERE id = ($1)'
@@ -35,18 +35,38 @@ export class Users{
         }
     }
 
-    async create(u:UserType):Promise<UserType>{
+    async create(u:userType):Promise<userType>{
         try{
             const conn = await client.connect()
             const sql = 'INSERT INTO users (first_name, last_name, password) VALUES ($1, $2, $3) RETURNING *'
-            const result = await conn.query(sql, [u.firstName, u.lastName, u.password])
+            const hashed_password = bcrypt.hashSync(
+                u.password + process.env.PEPPER,
+                parseInt(process.env.SALT as string))
+            const result = await conn.query(sql, [u.first_name, u.last_name, hashed_password])
             conn.release()
             return result.rows[0]
 
         }
         catch(err){
-            throw new Error(`Could not add new book ${u.firstName}. Error: ${err}`)
+            throw new Error(`Could not add new book ${u.first_name}. Error: ${err}`)
         }
     }
+
+    async authenticate(first_name:string, password:string):Promise<userType | null>{
+        const conn = await client.connect()
+        const sql = 'SELECT * FROM users WHERE first_name=($1)'
+        const result = await conn.query(sql, [first_name])
+        console.log(password + process.env.PEPPER)
+        if(result.rows.length){
+            const user = result.rows[0]
+            console.log(user)
+
+            if(bcrypt.compareSync(password + process.env.PEPPER, user.password)){
+                return user
+            }
+        }
+        return null
+    }
+
 
 }

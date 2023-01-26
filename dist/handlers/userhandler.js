@@ -39,14 +39,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.createUser = exports.getUser = exports.getUsers = void 0;
+exports.authenticateUser = exports.createUser = exports.getUser = exports.getUsers = void 0;
 var user_1 = require("../models/user");
 var dotenv_1 = __importDefault(require("dotenv"));
-var bcryptjs_1 = __importDefault(require("bcryptjs"));
 var authentication_1 = require("../utils/authentication");
 dotenv_1["default"].config();
 var user = new user_1.Users();
-var getUsers = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
+var getUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var users;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -73,17 +72,15 @@ var getUser = function (req, res) { return __awaiter(void 0, void 0, void 0, fun
 }); };
 exports.getUser = getUser;
 var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var hashed_password, user_to_create, newUser, token, err_1;
+    var user_to_create, newUser, token, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                hashed_password = bcryptjs_1["default"].hashSync(req.body.password + process.env.PEPPER, parseInt(process.env.SALT));
                 user_to_create = {
-                    id: req.body.id,
-                    firstName: req.body.first_name,
-                    lastName: req.body.last_name,
-                    password: hashed_password
+                    first_name: req.body.first_name,
+                    last_name: req.body.last_name,
+                    password: req.body.password
                 };
                 return [4 /*yield*/, user.create(user_to_create)];
             case 1:
@@ -101,3 +98,34 @@ var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
     });
 }); };
 exports.createUser = createUser;
+var authenticateUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var user_to_authenticate, authenticatedUser, token, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                user_to_authenticate = {
+                    first_name: req.body.first_name,
+                    last_name: req.body.last_name,
+                    password: req.body.password
+                };
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, user.authenticate(user_to_authenticate.first_name, user_to_authenticate.password)
+                    //console.log(authenticatedUser)
+                ];
+            case 2:
+                authenticatedUser = _a.sent();
+                token = (0, authentication_1.createJWT)(authenticatedUser);
+                res.json(token);
+                return [3 /*break*/, 4];
+            case 3:
+                error_1 = _a.sent();
+                res.status(401);
+                res.json({ error: error_1 });
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
+exports.authenticateUser = authenticateUser;
