@@ -1,19 +1,10 @@
 import client from "../database";
+import { createdProduct, productType } from "../interfaces/products";
 
-export type ProductType = {
-    name: string;
-    price: number;
 
-}
-
-export type createdProduct = {
-    id: number;
-    name: string;
-    price: number;
-}
 
 export class Products{
-    async index():Promise<ProductType[]>{
+    async index():Promise<createdProduct[]>{
         try{
             const conn = await client.connect()
             const sql = 'SELECT * FROM products'
@@ -26,7 +17,7 @@ export class Products{
         }
     }
 
-    async show(id:string):Promise<ProductType>{
+    async show(id:string):Promise<createdProduct>{
         
         try{
             const conn = await client.connect()
@@ -41,8 +32,7 @@ export class Products{
         }
     }
 
-    async create(p:ProductType):Promise<createdProduct>{
-        console.log("++++++++ correct ++++")
+    async create(p:productType):Promise<createdProduct>{
         try{
             const conn = await client.connect()
             const sql = 'INSERT INTO products (name, price) VALUES ($1, $2) RETURNING *'

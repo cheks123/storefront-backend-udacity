@@ -1,14 +1,10 @@
 import client from "../database";
 import bcrypt from "bcryptjs"
+import { userType, userTypeId } from "../interfaces/user";
 
-export type userType = {
-    first_name : string;
-    last_name : string;
-    password : string;
-}
 
 export class Users{
-    async index():Promise<userType[]>{
+    async index():Promise<userTypeId[]>{
         try{
             const conn = await client.connect()
             const sql = 'SELECT * FROM users'
@@ -21,7 +17,7 @@ export class Users{
         }
     }
 
-    async show(id:string):Promise<userType>{
+    async show(id:string):Promise<userTypeId>{
         try{
             const conn = await client.connect()
             const sql = 'SELECT * FROM users WHERE id = ($1)'
@@ -35,14 +31,17 @@ export class Users{
         }
     }
 
-    async create(u:userType):Promise<userType>{
+    async create(u:userType):Promise<userTypeId>{
         try{
             const conn = await client.connect()
-            const sql = 'INSERT INTO users (first_name, last_name, password) VALUES ($1, $2, $3) RETURNING *'
+            const sql = 'INSERT INTO users (first_name, last_name, username, password) VALUES ($1, $2, $3, $4) RETURNING *'
             const hashed_password = bcrypt.hashSync(
                 u.password + process.env.PEPPER,
                 parseInt(process.env.SALT as string))
-            const result = await conn.query(sql, [u.first_name, u.last_name, hashed_password])
+            
+            const username:string = u.first_name.toLowerCase() + u.last_name.toLowerCase()
+
+            const result = await conn.query(sql, [u.first_name, u.last_name, username, hashed_password])
             conn.release()
             return result.rows[0]
 
@@ -52,13 +51,13 @@ export class Users{
         }
     }
 
-    async authenticate(first_name:string, password:string):Promise<userType | null>{
+    async authenticate(username:string, password:string):Promise<userTypeId | null>{
         const conn = await client.connect()
-        const sql = 'SELECT * FROM users WHERE first_name=($1)'
-        const result = await conn.query(sql, [first_name])
+        const sql = 'SELECT * FROM users WHERE username=($1)'
+        const result = await conn.query(sql, [username])
         console.log(password + process.env.PEPPER)
         if(result.rows.length){
-            const user = result.rows[0]
+            const user:userTypeId = result.rows[0]
             console.log(user)
 
             if(bcrypt.compareSync(password + process.env.PEPPER, user.password)){

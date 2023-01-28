@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { Order, orderType, baseOrderType } from "../models/order";
+import { Order } from "../models/order";
+import { baseOrderType, orderType } from "../interfaces/order";
 
 
 const order = new Order()

@@ -104,16 +104,13 @@ var authenticateUser = function (req, res) { return __awaiter(void 0, void 0, vo
         switch (_a.label) {
             case 0:
                 user_to_authenticate = {
-                    first_name: req.body.first_name,
-                    last_name: req.body.last_name,
+                    username: req.body.username,
                     password: req.body.password
                 };
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, user.authenticate(user_to_authenticate.first_name, user_to_authenticate.password)
-                    //console.log(authenticatedUser)
-                ];
+                return [4 /*yield*/, user.authenticate(user_to_authenticate.username, user_to_authenticate.password)];
             case 2:
                 authenticatedUser = _a.sent();
                 token = (0, authentication_1.createJWT)(authenticatedUser);

@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express"
+import express from "express"
 import { getUsers, getUser, createUser, authenticateUser } from "../handlers/userhandler"
 import { authorize } from "../utils/authorization"
 

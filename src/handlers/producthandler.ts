@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { Products, ProductType } from "../models/product";
+import { Products } from "../models/product";
+import { createdProduct, productType } from "../interfaces/products";
 import dotenv from "dotenv"
 
 dotenv.config()
@@ -9,13 +10,13 @@ const product = new Products()
 
 
 export const getProducts = async(_req:Request, res:Response) =>{
-    const products = await product.index()
+    const products:createdProduct[] = await product.index()
     res.json(products)
 
 }
 
 export const getProduct = async(req:Request, res:Response) =>{
-    const single_product = await product.show(req.params.id)
+    const single_product:createdProduct = await product.show(req.params.id)
     res.json(single_product)
     
 }

@@ -98,23 +98,20 @@ var Products = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log("++++++++ correct ++++");
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 4, , 5]);
+                        _a.trys.push([0, 3, , 4]);
                         return [4 /*yield*/, database_1["default"].connect()];
-                    case 2:
+                    case 1:
                         conn = _a.sent();
                         sql = 'INSERT INTO products (name, price) VALUES ($1, $2) RETURNING *';
                         return [4 /*yield*/, conn.query(sql, [p.name, p.price])];
-                    case 3:
+                    case 2:
                         result = _a.sent();
                         conn.release();
                         return [2 /*return*/, result.rows[0]];
-                    case 4:
+                    case 3:
                         err_3 = _a.sent();
                         throw new Error("Could not add new book ".concat(p.name, ". Error: ").concat(err_3));
-                    case 5: return [2 /*return*/];
+                    case 4: return [2 /*return*/];
                 }
             });
         });

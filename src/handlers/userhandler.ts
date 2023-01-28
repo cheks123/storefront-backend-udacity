@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { Users, userType } from "../models/user";
-import * as jwt from "jsonwebtoken"
-import dotenv from "dotenv"
+import { Users } from "../models/user";
+import { loginBody, userTypeId } from "../interfaces/user";
+import dotenv from "dotenv";
+import { userType } from "../interfaces/user";
 
 
 import { createJWT } from "../utils/authentication";
@@ -45,19 +46,18 @@ export const createUser = async(req:Request, res:Response) =>{
 }
 
 export const authenticateUser = async(req:Request, res:Response) =>{
-    const user_to_authenticate:userType = {
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
+    const user_to_authenticate:loginBody = {
+        username: req.body.username,
         password:req.body.password
     }
     
 
     try{
-        const authenticatedUser:userType | null = await user.authenticate(user_to_authenticate.first_name, user_to_authenticate.password)
-        //console.log(authenticatedUser)
+        const authenticatedUser:userTypeId | null = await user.authenticate(user_to_authenticate.username, user_to_authenticate.password)
         var token = createJWT(authenticatedUser)
         res.json(token)
     }
+
     catch(error ){
         res.status(401)
         res.json({ error })

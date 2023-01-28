@@ -95,7 +95,7 @@ var Users = /** @class */ (function () {
     };
     Users.prototype.create = function (u) {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, hashed_password, result, err_3;
+            var conn, sql, hashed_password, username, result, err_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -103,9 +103,10 @@ var Users = /** @class */ (function () {
                         return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = 'INSERT INTO users (first_name, last_name, password) VALUES ($1, $2, $3) RETURNING *';
+                        sql = 'INSERT INTO users (first_name, last_name, username, password) VALUES ($1, $2, $3, $4) RETURNING *';
                         hashed_password = bcryptjs_1["default"].hashSync(u.password + process.env.PEPPER, parseInt(process.env.SALT));
-                        return [4 /*yield*/, conn.query(sql, [u.first_name, u.last_name, hashed_password])];
+                        username = u.first_name.toLowerCase() + u.last_name.toLowerCase();
+                        return [4 /*yield*/, conn.query(sql, [u.first_name, u.last_name, username, hashed_password])];
                     case 2:
                         result = _a.sent();
                         conn.release();
@@ -118,7 +119,7 @@ var Users = /** @class */ (function () {
             });
         });
     };
-    Users.prototype.authenticate = function (first_name, password) {
+    Users.prototype.authenticate = function (username, password) {
         return __awaiter(this, void 0, void 0, function () {
             var conn, sql, result, user;
             return __generator(this, function (_a) {
@@ -126,8 +127,8 @@ var Users = /** @class */ (function () {
                     case 0: return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = 'SELECT * FROM users WHERE first_name=($1)';
-                        return [4 /*yield*/, conn.query(sql, [first_name])];
+                        sql = 'SELECT * FROM users WHERE username=($1)';
+                        return [4 /*yield*/, conn.query(sql, [username])];
                     case 2:
                         result = _a.sent();
                         console.log(password + process.env.PEPPER);

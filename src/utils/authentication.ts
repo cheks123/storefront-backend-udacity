@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import { userType } from "../models/user"
+import { userType } from "../interfaces/user"
 
 const secret = process.env.TOKEN_SECRET as string
 

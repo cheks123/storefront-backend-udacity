@@ -2,16 +2,16 @@
     "dev": {
         "driver": "pg",
         "host": "127.0.0.1",
-        "database": "<dev db name>",
-        "user": "<your username>",
-        "password": "<your password>"
+        "database": "store",
+        "user": "chekwubeutomi",
+        "password": "password123"
     },
     
     "test": {
         "driver": "pg",
         "host": "127.0.0.1",
-        "database": "<test db name>",
-        "user": "<your username>",
-        "password": "<your password>"
+        "database": "store_db_test",
+        "user": "chekwubeutomi",
+        "password": "password123"
     }
 }
