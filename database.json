@@ -2,16 +2,16 @@
     "dev": {
         "driver": "pg",
         "host": "127.0.0.1",
-        "database": "store",
-        "user": "chekwubeutomi",
+        "database": "storefront_db",
+        "user": "full_stack_user",
         "password": "password123"
     },
     
     "test": {
         "driver": "pg",
         "host": "127.0.0.1",
-        "database": "store_db_test",
-        "user": "chekwubeutomi",
+        "database": "storefront_db_test",
+        "user": "full_stack_user",
         "password": "password123"
     }
 }

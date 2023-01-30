@@ -45,58 +45,41 @@ Backend port: 3000
 
 # Database Setup
 
+# Create User
+CREATE ROLE full_stack_user SUPERUSER LOGIN PASSWORD 'password123';
+
 ## Create Database
 Use the following query commands to set up both the store and store_test database
 
-CREATE DATABASE store;
-CREATE DATABASE store_db_test;
+CREATE DATABASE storefront_db;
 
-## Grant user chekwubeutomi permission
-Use the following query commands to grant all database previleges to user chekwubeutomi
-
-GRANT ALL PRIVILEGES ON DATABASE store TO chekwubeutomi;
-GRANT ALL PRIVILEGES ON DATABASE store_db_test TO chekwubeutomi;
+CREATE DATABASE storefront_db_test;
 
 
 
 # Environment Variables
 Create a .env file at the root of the application with the following variables:
+
     POSTGRES_HOST=127.0.0.1
-    POSTGRES_DB=store
-    POSTGRES_USER=chekwubeutomi
+
+    POSTGRES_DB=storefront_db
+
+    POSTGRES_DB_TEST=storefront_db_test
+
+    POSTGRES_USER=full_stack_user
+
     POSTGRES_PASSWORD=password123
+
     PEPPER=udacity_project
+
     SALT=10
+
     TOKEN_SECRET=this_is_secret
+
     ENV=dev
 
 ## Note:
 When you want to run the test, you have to change the ENV from 'dev' to 'test'
-
-## Database.json
-Add database.json file at the root of the application before running the application.
-The database.json should look like this:
-
-{
-    "dev": {
-        "driver": "pg",
-        "host": "127.0.0.1",
-        "database": "store",
-        "user": "chekwubeutomi",
-        "password": "password123"
-    },
-    
-    "test": {
-        "driver": "pg",
-        "host": "127.0.0.1",
-        "database": "store_db_test",
-        "user": "chekwubeutomi",
-        "password": "password123"
-    }
-}
-
-The 'dev' component is used when you are running the development version of the project,
-while the 'test' commponent is used when you are running the unit and integrated test.
 
 # Database Migration
 
@@ -165,10 +148,21 @@ To get all the orders, send a get request to: localhost:3000/orders
 To get all current order by a particular user,
 send a get request to: localhost:3000/current-orders/user_id
 
+## Add to order_products table
+To combine order and products (one-many relationship),
+make a post request to: localhost:3000/order-products
+
+The body of the request should contain:
+{
+    "product_id": <integer>,
+    "order_id": <integer>,
+    "quantity": <integer>
+}
+
 
 # Testing
 To test the application, run the command: npm run test
 
 ## Note:
-Before you run the test make sure the environment variable ENV is set to 'test'
+Before running the test command, set the environment variable ENV to 'test'
 

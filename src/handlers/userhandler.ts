@@ -50,10 +50,12 @@ export const authenticateUser = async(req:Request, res:Response) =>{
         username: req.body.username,
         password:req.body.password
     }
+
+    console.log(user_to_authenticate)
     
 
     try{
-        const authenticatedUser:userTypeId | null = await user.authenticate(user_to_authenticate.username, user_to_authenticate.password)
+        const authenticatedUser: userTypeId | null = await user.authenticate(user_to_authenticate.username, user_to_authenticate.password)
         var token = createJWT(authenticatedUser)
         res.json(token)
     }

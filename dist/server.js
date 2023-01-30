@@ -6,9 +6,9 @@ exports.__esModule = true;
 var express_1 = __importDefault(require("express"));
 var body_parser_1 = __importDefault(require("body-parser"));
 var cors_1 = __importDefault(require("cors"));
-var productsRoutes_1 = __importDefault(require("./routes/productsRoutes"));
-var usersRoutes_1 = __importDefault(require("./routes/usersRoutes"));
-var orderRoutes_1 = __importDefault(require("./routes/orderRoutes"));
+var products_1 = __importDefault(require("./routes/products"));
+var users_1 = __importDefault(require("./routes/users"));
+var orders_1 = __importDefault(require("./routes/orders"));
 var app = (0, express_1["default"])();
 var address = "0.0.0.0:3000";
 var corsOptions = {
@@ -21,9 +21,9 @@ app.use(express_1["default"].json());
 app.get('/', function (req, res) {
     res.send('Hello World!');
 });
-(0, productsRoutes_1["default"])(app);
-(0, usersRoutes_1["default"])(app);
-(0, orderRoutes_1["default"])(app);
+(0, products_1["default"])(app);
+(0, users_1["default"])(app);
+(0, orders_1["default"])(app);
 app.listen(3000, function () {
     console.log("starting app on: ".concat(address));
 });

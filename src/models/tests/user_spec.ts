@@ -1,6 +1,4 @@
-import { Users, userType } from "../user";
-
-const test_user:userType = {"id":7, "firstName": "Adams", lastName:"Mosley", password: "1234abcd"}
+import { Users } from "../user";
 
 
 const user = new Users()

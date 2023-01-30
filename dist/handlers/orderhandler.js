@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.createOrder = exports.getCurrentOrders = exports.getOrders = void 0;
+exports.orderProduct = exports.createOrder = exports.getCurrentOrders = exports.getOrders = void 0;
 var order_1 = require("../models/order");
 var order = new order_1.Order();
 var getOrders = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -72,8 +72,6 @@ var createOrder = function (req, res) { return __awaiter(void 0, void 0, void 0,
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 order_to_create = {
-                    product_id: req.body.product_name,
-                    quantity: req.body.quantity,
                     user_id: req.body.user_id,
                     status: req.body.status
                 };
@@ -96,3 +94,33 @@ var createOrder = function (req, res) { return __awaiter(void 0, void 0, void 0,
     });
 }); };
 exports.createOrder = createOrder;
+var orderProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var order_to_create, newOrder, err_2, current_orders;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                order_to_create = {
+                    user_id: req.body.user_id,
+                    product_id: req.body.product_id,
+                    quantity: req.body.quantity
+                };
+                return [4 /*yield*/, order.order_products(order_to_create)];
+            case 1:
+                newOrder = _a.sent();
+                res.json(newOrder);
+                return [3 /*break*/, 3];
+            case 2:
+                err_2 = _a.sent();
+                res.status(400);
+                res.json(err_2);
+                return [3 /*break*/, 3];
+            case 3: return [4 /*yield*/, order.current_order(req.params.user_id)];
+            case 4:
+                current_orders = _a.sent();
+                res.json(current_orders);
+                return [2 /*return*/];
+        }
+    });
+}); };
+exports.orderProduct = orderProduct;

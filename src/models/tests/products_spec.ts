@@ -1,7 +1,4 @@
-import { Products, ProductType } from "../product";
-
-const test_product:ProductType = {id:7, name: "Milk", price:200}
-
+import { Products } from "../product";
 
 const product = new Products()
 

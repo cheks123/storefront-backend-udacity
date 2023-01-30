@@ -52,8 +52,8 @@ var Order = /** @class */ (function () {
                     case 0: return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = 'INSERT INTO orders (product_id, quantity, user_id, status) VALUES($1, $2, $3, $4) RETURNING *';
-                        return [4 /*yield*/, conn.query(sql, [o.product_id, o.quantity, o.user_id, o.status])];
+                        sql = 'INSERT INTO orders (user_id, status) VALUES($1, $2) RETURNING *';
+                        return [4 /*yield*/, conn.query(sql, [o.user_id, o.status])];
                     case 2:
                         result = _a.sent();
                         conn.release();
@@ -64,10 +64,12 @@ var Order = /** @class */ (function () {
     };
     Order.prototype.index = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var conn, sql, result;
+            var conn, sql, result, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, database_1["default"].connect()];
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
                         sql = 'SELECT * FROM orders';
@@ -76,13 +78,17 @@ var Order = /** @class */ (function () {
                         result = _a.sent();
                         conn.release();
                         return [2 /*return*/, result.rows];
+                    case 3:
+                        err_1 = _a.sent();
+                        throw new Error("Cannot get orders ".concat(err_1));
+                    case 4: return [2 /*return*/];
                 }
             });
         });
     };
     Order.prototype.current_order = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var status, conn, sql, result, err_1;
+            var status, conn, sql, result, err_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -100,9 +106,33 @@ var Order = /** @class */ (function () {
                         conn.release();
                         return [2 /*return*/, result.rows];
                     case 4:
-                        err_1 = _a.sent();
-                        throw new Error("Cannot get items ".concat(err_1));
+                        err_2 = _a.sent();
+                        throw new Error("Cannot get items ".concat(err_2));
                     case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Order.prototype.order_products = function (o) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result, err_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = 'INSERT INTO orders (user_id, product_id, quantity) VALUES($1, $2, $3) RETURNING *';
+                        return [4 /*yield*/, conn.query(sql, [o.user_id, o.product_id, o.quantity])];
+                    case 2:
+                        result = _a.sent();
+                        conn.release();
+                        return [2 /*return*/, result.rows[0]];
+                    case 3:
+                        err_3 = _a.sent();
+                        throw new Error("Cannot create order-products ".concat(err_3));
+                    case 4: return [2 /*return*/];
                 }
             });
         });

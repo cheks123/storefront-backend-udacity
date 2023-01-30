@@ -1,4 +1,4 @@
-import { Order, orderType } from "../order";
+import { Order } from "../order";
 
 
 const order = new Order()

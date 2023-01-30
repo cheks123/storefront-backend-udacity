@@ -107,6 +107,7 @@ var authenticateUser = function (req, res) { return __awaiter(void 0, void 0, vo
                     username: req.body.username,
                     password: req.body.password
                 };
+                console.log(user_to_authenticate);
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
