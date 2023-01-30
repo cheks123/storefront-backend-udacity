@@ -55,6 +55,51 @@ CREATE DATABASE storefront_db;
 
 CREATE DATABASE storefront_db_test;
 
+## Database Schema for (storefront_db)
+
+### Users Table
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    first_name VARCHAR(30) NOT NULL,
+    last_name VARCHAR(30) NOT NULL,
+    username VARCHAR(60) NOT NULL UNIQUE,
+    password VARCHAR NOT NULL
+);
+
+
+### Products Table
+CREATE TABLE products (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    price FLOAT NOT NULL
+);
+
+
+### Orders Table
+CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES users(id),
+    status VARCHAR(10) NOT NULL
+);
+
+
+### Order_products Table
+CREATE TABLE order_products (
+    id SERIAL PRIMARY KEY,
+    order_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    CONSTRAINT fk_order
+        FOREIGN KEY (order_id) REFERENCES orders(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_products
+        FOREIGN KEY (product_id) REFERENCES products(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+    );
+
+
 
 
 # Environment Variables
