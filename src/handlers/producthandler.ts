@@ -10,14 +10,24 @@ const product = new Products()
 
 
 export const getProducts = async(_req:Request, res:Response) =>{
-    const products:createdProduct[] = await product.index()
-    res.json(products)
+    try{
+        const products:createdProduct[] = await product.index()
+        res.json(products)}
+    catch(err){
+        res.status(400)
+        res.json(err)
+    }
 
 }
 
 export const getProduct = async(req:Request, res:Response) =>{
-    const single_product:createdProduct = await product.show(req.params.id)
-    res.json(single_product)
+    try{
+        const single_product:createdProduct = await product.show(req.params.id)
+        res.json(single_product)}
+    catch(err){
+        res.status(400)
+        res.json(err)
+    }
     
 }
 export const createProduct = async(req:Request, res:Response) =>{

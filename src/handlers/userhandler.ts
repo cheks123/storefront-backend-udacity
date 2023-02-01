@@ -14,14 +14,27 @@ const user = new Users()
 
 export const getUsers = async(req:Request, res:Response) =>{
 
-    const users = await user.index()
-    res.json(users)
+    try{
+        const users = await user.index()
+        res.json(users)
+    }
+    catch(err){
+        res.status(400)
+        res.json(err)
+    }
+    
 
 }
 
 export const getUser = async(req:Request, res:Response) =>{
-    const single_user = await user.show(req.params.id)
-    res.json(single_user)
+    try{
+        const single_user = await user.show(req.params.id)
+        res.json(single_user)
+    }
+    catch(err){
+        res.status(400)
+        res.json(err)
+    }
     
 }
 
@@ -50,9 +63,6 @@ export const authenticateUser = async(req:Request, res:Response) =>{
         username: req.body.username,
         password:req.body.password
     }
-
-    console.log(user_to_authenticate)
-    
 
     try{
         const authenticatedUser: userTypeId | null = await user.authenticate(user_to_authenticate.username, user_to_authenticate.password)

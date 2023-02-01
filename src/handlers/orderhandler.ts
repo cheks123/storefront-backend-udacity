@@ -7,13 +7,25 @@ const order = new Order()
 
 
 export const getOrders = async (req:Request, res:Response) =>{
-    const orders:orderType[] = await order.index()
-    res.json(orders)
+    try{
+        const orders:orderType[] = await order.index()
+        res.json(orders)
+    }
+    catch(err){
+        res.status(400)
+        res.json(err)
+    }
 }
 export const getCurrentOrders = async(req:Request, res:Response) =>{
 
-    const current_orders = await order.current_order(req.params.user_id)
-    res.json(current_orders)
+    try{
+        const current_orders = await order.current_order(req.params.user_id)
+        res.json(current_orders)
+    }
+    catch(err){
+        res.status(400)
+        res.json(err)
+    }
 
 }
 
@@ -61,8 +73,8 @@ export const orderProduct = async(req:Request, res:Response) =>{
         res.json(err)
     }
 
-    const current_orders = await order.current_order(req.params.user_id)
-    res.json(current_orders)
+    //const current_orders = await order.current_order(req.params.user_id)
+    //res.json(current_orders)
 
 }
 
