@@ -58,6 +58,20 @@ export const createUser = async(req:Request, res:Response) =>{
     }
 }
 
+
+export const deleteUser = async(req:Request, res:Response) =>{
+    try{
+        const del_user = await user.delete(req.params.id)
+        res.json(del_user)
+    }
+    catch(err){
+        res.status(400)
+        res.json(err)
+    }
+    
+}
+
+
 export const authenticateUser = async(req:Request, res:Response) =>{
     const user_to_authenticate:loginBody = {
         username: req.body.username,
@@ -70,7 +84,7 @@ export const authenticateUser = async(req:Request, res:Response) =>{
         res.json(token)
     }
 
-    catch(error ){
+    catch(error){
         res.status(401)
         res.json({ error })
     }

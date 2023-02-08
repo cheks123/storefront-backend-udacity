@@ -78,6 +78,19 @@ export const orderProduct = async(req:Request, res:Response) =>{
 
 }
 
+export const deleteOrderProduct = async(req:Request, res:Response) =>{
+    try{
+        const single_order = await order.delete_order_products(req.params.id)
+        res.json(single_order)
+    }
+    catch(err){
+        res.status(400)
+        res.json(err)
+    }
+    
+}
+
+
 
 
 

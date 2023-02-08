@@ -40,33 +40,49 @@ exports.orderProduct = exports.createOrder = exports.getCurrentOrders = exports.
 var order_1 = require("../models/order");
 var order = new order_1.Order();
 var getOrders = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var orders;
+    var orders, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, order.index()];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, order.index()];
             case 1:
                 orders = _a.sent();
                 res.json(orders);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                err_1 = _a.sent();
+                res.status(400);
+                res.json(err_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 exports.getOrders = getOrders;
 var getCurrentOrders = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var current_orders;
+    var current_orders, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, order.current_order(req.params.user_id)];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, order.current_order(req.params.user_id)];
             case 1:
                 current_orders = _a.sent();
                 res.json(current_orders);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                err_2 = _a.sent();
+                res.status(400);
+                res.json(err_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 exports.getCurrentOrders = getCurrentOrders;
 var createOrder = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var order_to_create, newOrder, err_1, current_orders;
+    var order_to_create, newOrder, err_3, current_orders;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -81,9 +97,9 @@ var createOrder = function (req, res) { return __awaiter(void 0, void 0, void 0,
                 res.json(newOrder);
                 return [3 /*break*/, 3];
             case 2:
-                err_1 = _a.sent();
+                err_3 = _a.sent();
                 res.status(400);
-                res.json(err_1);
+                res.json(err_3);
                 return [3 /*break*/, 3];
             case 3: return [4 /*yield*/, order.current_order(req.params.user_id)];
             case 4:
@@ -95,7 +111,7 @@ var createOrder = function (req, res) { return __awaiter(void 0, void 0, void 0,
 }); };
 exports.createOrder = createOrder;
 var orderProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var order_to_create, newOrder, err_2, current_orders;
+    var order_to_create, newOrder, err_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -111,15 +127,11 @@ var orderProduct = function (req, res) { return __awaiter(void 0, void 0, void 0
                 res.json(newOrder);
                 return [3 /*break*/, 3];
             case 2:
-                err_2 = _a.sent();
+                err_4 = _a.sent();
                 res.status(400);
-                res.json(err_2);
+                res.json(err_4);
                 return [3 /*break*/, 3];
-            case 3: return [4 /*yield*/, order.current_order(req.params.user_id)];
-            case 4:
-                current_orders = _a.sent();
-                res.json(current_orders);
-                return [2 /*return*/];
+            case 3: return [2 /*return*/];
         }
     });
 }); };

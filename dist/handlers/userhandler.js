@@ -46,33 +46,49 @@ var authentication_1 = require("../utils/authentication");
 dotenv_1["default"].config();
 var user = new user_1.Users();
 var getUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var users;
+    var users, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, user.index()];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, user.index()];
             case 1:
                 users = _a.sent();
                 res.json(users);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                err_1 = _a.sent();
+                res.status(400);
+                res.json(err_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 exports.getUsers = getUsers;
 var getUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var single_user;
+    var single_user, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, user.show(req.params.id)];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, user.show(req.params.id)];
             case 1:
                 single_user = _a.sent();
                 res.json(single_user);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                err_2 = _a.sent();
+                res.status(400);
+                res.json(err_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 exports.getUser = getUser;
 var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user_to_create, newUser, token, err_1;
+    var user_to_create, newUser, token, err_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -89,9 +105,9 @@ var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                 res.json(token);
                 return [3 /*break*/, 3];
             case 2:
-                err_1 = _a.sent();
+                err_3 = _a.sent();
                 res.status(400);
-                res.json(err_1);
+                res.json(err_3);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
@@ -107,7 +123,6 @@ var authenticateUser = function (req, res) { return __awaiter(void 0, void 0, vo
                     username: req.body.username,
                     password: req.body.password
                 };
-                console.log(user_to_authenticate);
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);

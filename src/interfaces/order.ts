@@ -18,3 +18,11 @@ export type orderProductType = {
     
 }
 
+export type orderProductTypeId = {
+    id:number,
+    product_id: number;
+    quantity : number;
+    user_id : number;
+    
+}
+

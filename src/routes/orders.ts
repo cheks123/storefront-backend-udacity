@@ -6,7 +6,7 @@ const orderRouter = (app:express.Application) =>{
     app.get('/orders', authorize, getOrders)
     app.post('/orders', authorize, createOrder)
     app.get('/current-orders/:user_id', authorize, getCurrentOrders)
-    app.post('/order-post', authorize, orderProduct)
+    app.post('/order-products', authorize, orderProduct)
     
 }
 

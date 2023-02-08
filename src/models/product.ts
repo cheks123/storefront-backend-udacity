@@ -46,4 +46,19 @@ export class Products{
         }
     }
 
+    async delete(id:string):Promise<createdProduct>{
+        
+        try{
+            const conn = await client.connect()
+            const sql = 'DELETE * FROM products WHERE id = ($1)'
+            const result = await conn.query(sql, [id])
+            conn.release()
+            return result.rows[0]
+
+        }
+        catch(err){
+            throw new Error(`Cannot find item ${id}. Error: ${err}`)
+        }
+    }
+
 }

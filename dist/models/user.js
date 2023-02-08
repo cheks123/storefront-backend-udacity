@@ -113,7 +113,7 @@ var Users = /** @class */ (function () {
                         return [2 /*return*/, result.rows[0]];
                     case 3:
                         err_3 = _a.sent();
-                        throw new Error("Could not add new book ".concat(u.first_name, ". Error: ").concat(err_3));
+                        throw new Error("Could not add new user ".concat(u.first_name, ". Error: ").concat(err_3));
                     case 4: return [2 /*return*/];
                 }
             });
@@ -134,7 +134,6 @@ var Users = /** @class */ (function () {
                         console.log(password + process.env.PEPPER);
                         if (result.rows.length) {
                             user = result.rows[0];
-                            console.log(user);
                             if (bcryptjs_1["default"].compareSync(password + process.env.PEPPER, user.password)) {
                                 return [2 /*return*/, user];
                             }

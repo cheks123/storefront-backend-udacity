@@ -32,8 +32,7 @@ export const getProduct = async(req:Request, res:Response) =>{
 }
 export const createProduct = async(req:Request, res:Response) =>{
     try{
-        const product_to_create = {
-            id: req.body.id,
+        const product_to_create:productType = {
             name: req.body.name,
             price: req.body.price
         }
@@ -44,4 +43,16 @@ export const createProduct = async(req:Request, res:Response) =>{
         res.status(400)
         res.json(err)
     }
+}
+
+export const deleteProduct = async(req:Request, res:Response) =>{
+    try{
+        const single_product:createdProduct = await product.delete(req.params.id)
+        res.json(single_product)
+    }
+    catch(err){
+        res.status(400)
+        res.json(err)
+    }
+    
 }

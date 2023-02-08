@@ -1,5 +1,5 @@
 import client from "../database";
-import { baseOrderType, orderProductType, orderType } from "../interfaces/order";
+import { baseOrderType, orderProductType, orderProductTypeId, orderType } from "../interfaces/order";
 
 
 export class Order{
@@ -42,7 +42,7 @@ export class Order{
     async order_products(o:orderProductType):Promise<orderType>{
         try{
             const conn = await client.connect()
-            const sql = 'INSERT INTO orders (user_id, product_id, quantity) VALUES($1, $2, $3) RETURNING *'
+            const sql = 'INSERT INTO order_products (user_id, product_id, quantity) VALUES($1, $2, $3) RETURNING *'
             const result = await conn.query(sql, [o.user_id, o.product_id, o.quantity])
             conn.release()
             return result.rows[0]
@@ -51,6 +51,21 @@ export class Order{
             throw new Error(`Cannot create order-products ${err}`)
         }
     }
+
+    async delete_order_products(id:string):Promise<orderProductTypeId>{
+        try{
+            const conn = await client.connect()
+            const sql = 'DELETE * FROM order_products WHERE id = ($1)'
+            const result = await conn.query(sql, [id])
+            conn.release()
+            return result.rows[0]
+        }
+        catch(err){
+            throw new Error(`Cannot create order-products ${err}`)
+        }
+    }
+
+
 
     
 

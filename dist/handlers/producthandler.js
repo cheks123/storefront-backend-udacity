@@ -45,39 +45,54 @@ var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1["default"].config();
 var product = new product_1.Products();
 var getProducts = function (_req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var products;
+    var products, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, product.index()];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, product.index()];
             case 1:
                 products = _a.sent();
                 res.json(products);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                err_1 = _a.sent();
+                res.status(400);
+                res.json(err_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 exports.getProducts = getProducts;
 var getProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var single_product;
+    var single_product, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, product.show(req.params.id)];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, product.show(req.params.id)];
             case 1:
                 single_product = _a.sent();
                 res.json(single_product);
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                err_2 = _a.sent();
+                res.status(400);
+                res.json(err_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
 exports.getProduct = getProduct;
 var createProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var product_to_create, newProduct, err_1;
+    var product_to_create, newProduct, err_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 product_to_create = {
-                    id: req.body.id,
                     name: req.body.name,
                     price: req.body.price
                 };
@@ -87,9 +102,9 @@ var createProduct = function (req, res) { return __awaiter(void 0, void 0, void 
                 res.json(newProduct);
                 return [3 /*break*/, 3];
             case 2:
-                err_1 = _a.sent();
+                err_3 = _a.sent();
                 res.status(400);
-                res.json(err_1);
+                res.json(err_3);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }

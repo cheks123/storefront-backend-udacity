@@ -47,9 +47,24 @@ export class Users{
 
         }
         catch(err){
-            throw new Error(`Could not add new book ${u.first_name}. Error: ${err}`)
+            throw new Error(`Could not add new user ${u.first_name}. Error: ${err}`)
         }
     }
+
+    async delete(id:string):Promise<userTypeId>{
+        try{
+            const conn = await client.connect()
+            const sql = 'DELETE * FROM users WHERE id = ($1)'
+            const result = await conn.query(sql, [id])
+            conn.release()
+            return result.rows[0]
+
+        }
+        catch(err){
+            throw new Error(`Cannot find item ${id}. Error: ${err}`)
+        }
+    }
+
 
     async authenticate(username:string, password:string):Promise<userTypeId | null>{
         const conn = await client.connect()
@@ -58,7 +73,6 @@ export class Users{
         console.log(password + process.env.PEPPER)
         if(result.rows.length){
             const user:userTypeId = result.rows[0]
-            console.log(user)
 
             if(bcrypt.compareSync(password + process.env.PEPPER, user.password)){
                 return user
