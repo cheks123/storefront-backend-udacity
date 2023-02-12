@@ -20,75 +20,70 @@ let orderProductData:orderProductType
 
 describe("Order Handler", ()=>{
     beforeAll(async ()=>{
-        const {body:userBody} = await request.post('/users').send(userData)
-        token = userBody
+        const response = await request.post('/users').send(userData)
+        token = response.body
 
+        
+        const verified_obj = jwt.verify(token, TOKEN_SECRET)
         //@ts-ignore
-        const {user} = jwt.verify(token, TOKEN_SECRET)
-        userId = user.id
+        userId = verified_obj.user.id
 
-        const {body: productBody} = await request.post('/products')
-        .set("Authorization", "bearer " + token)
-        .send(productData)
-
-        productId = productBody.id
+        const response2 = await request.post('/products').send(productData).set("auth-token", token)
+        
+        productId = response2.body.id
 
         orderData = {user_id: userId, status:"active"}
-        orderProductData = {product_id:productId, user_id:userId, quantity:3}
+        
     })
 
-    afterAll(async()=>{
-        await request.delete(`products/${productId}`).set("Authorization", "bearer " + token)
-        await request.delete(`users/${userId}`).set("Authorization", "bearer " + token)
+    
+
+    it("should create order", async (done)=>{
+        const response = await request.post('/orders').send(orderData).set("auth-token", token)
+        orderId = response.body.id
+        orderProductData = {product_id:productId, order_id:orderId, quantity:3}
+        expect(response.status).toBe(200)    
+        done()
     })
 
-    it("should create order", (done)=>{
-        request.post('/orders')
-        .send(orderData)
-        .set("Authorization", "bearer " + token)
-        .then(res=>{
-            const {body, status} = res
-            expect(status).toBe(200)
-            orderId = body.id
-            done()
-        })
+    it("should get all orders", async (done)=>{
+        const response = await request.get('/orders').set("auth-token", token)
+        expect(response.status).toBe(200)
+        done()
     })
 
-    it("should get all orders", (done)=>{
-        request.get('/orders')
-        .set("Authorization", "bearer " + token)
-        .then(res=>{
-            expect(res.status).toBe(200)
-        })
+    it("should get all active orders by user", async (done)=>{
+        const response = await request.get(`/current-orders/${userId}`).set("auth-token", token)
+        expect(response.status).toBe(200)
+        done()
     })
 
-    it("should get all active orders by user", (done)=>{
-        request.get(`/current-orders/${userId}`)
-        .set("Authorization", "bearer " + token)
-        .then(res=>{
-            expect(res.status).toBe(200)
-            done()
-        })
+    it("should post to order-products", async (done)=>{
+        const response = await request.post('/order-products').send(orderProductData).set("auth-token", token)
+        expect(response.status).toBe(200)
+        orderProductId = response.body.id
+        done()
     })
 
-    it("should post to order-products", (done)=>{
-        request.get('/order-products')
-        .send(orderProductData)
-        .set("Authorization", "bearer " + token)
-        .then(res=>{
-            const {body, status } = res
-            expect(status).toBe(200)
-            orderProductId = body.id
-            done()
-        })
+    it("should delete order by id", async (done)=>{
+        const response = await request.delete(`/orders/${orderId}`).set("auth-token", token)
+        expect(response.status).toBe(200)
+        done()
     })
 
-    it("should delete order-products by id", (done)=>{
-        request.delete(`/order-products/${orderProductId}`)
-        .set("Authorization", "bearer " + token)
-        .then(res=>{
-            expect(res.status).toBe(200)
-        })
+    it("should delete order-products by id", async (done)=>{
+        const response = await request.delete(`/order-products/${orderProductId}`).set("auth-token", token)
+        expect(response.status).toBe(200)
+        done()
+    })
+
+    afterAll(async(done)=>{
+        const response = await request.delete(`/products/${productId}`).set("auth-token", token)
+        expect(response.status).toBe(200)
+        
+        const response2 = await request.delete(`/users/${userId}`).set("auth-token", token)
+        expect(response2.status).toBe(200)
+        done()
     })
 
 })

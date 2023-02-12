@@ -8,7 +8,7 @@ const order = new Order()
 
 export const getOrders = async (req:Request, res:Response) =>{
     try{
-        const orders:orderType[] = await order.index()
+        const orders = await order.index()
         res.json(orders)
     }
     catch(err){
@@ -57,7 +57,7 @@ export const orderProduct = async(req:Request, res:Response) =>{
     try{
 
         const order_to_create:orderProductType = {
-            user_id: req.body.user_id,
+            order_id: req.body.order_id,
             product_id: req.body.product_id,
             quantity: req.body.quantity
 
@@ -73,15 +73,25 @@ export const orderProduct = async(req:Request, res:Response) =>{
         res.json(err)
     }
 
-    //const current_orders = await order.current_order(req.params.user_id)
-    //res.json(current_orders)
-
 }
+
+export const deleteOrder = async(req:Request, res:Response) =>{
+    try{
+        const deleted_order = await order.delete_order(req.params.order_id)
+        res.json(deleted_order)
+    }
+    catch(err){
+        res.status(400)
+        res.json(err)
+    }
+    
+}
+
 
 export const deleteOrderProduct = async(req:Request, res:Response) =>{
     try{
-        const single_order = await order.delete_order_products(req.params.id)
-        res.json(single_order)
+        const deleted_order_product = await order.delete_order_products(req.params.order_product_id)
+        res.json(deleted_order_product)
     }
     catch(err){
         res.status(400)

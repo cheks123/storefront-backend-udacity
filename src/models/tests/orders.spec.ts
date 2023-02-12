@@ -24,6 +24,11 @@ describe("Order model", ()=>{
     })
 
     it("should have delete_order_product method", (done)=>{
+        expect(ord.delete_order).toBeDefined()
+        done()
+    })
+
+    it("should have delete_order_product method", (done)=>{
         expect(ord.delete_order_products).toBeDefined()
         done()
     })

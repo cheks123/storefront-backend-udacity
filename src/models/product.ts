@@ -50,7 +50,7 @@ export class Products{
         
         try{
             const conn = await client.connect()
-            const sql = 'DELETE * FROM products WHERE id = ($1)'
+            const sql = 'DELETE FROM products WHERE id = ($1)'
             const result = await conn.query(sql, [id])
             conn.release()
             return result.rows[0]

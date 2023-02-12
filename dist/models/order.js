@@ -123,7 +123,7 @@ var Order = /** @class */ (function () {
                         return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
                         conn = _a.sent();
-                        sql = 'INSERT INTO orders (user_id, product_id, quantity) VALUES($1, $2, $3) RETURNING *';
+                        sql = 'INSERT INTO order_products (user_id, product_id, quantity) VALUES($1, $2, $3) RETURNING *';
                         return [4 /*yield*/, conn.query(sql, [o.user_id, o.product_id, o.quantity])];
                     case 2:
                         result = _a.sent();
@@ -132,6 +132,30 @@ var Order = /** @class */ (function () {
                     case 3:
                         err_3 = _a.sent();
                         throw new Error("Cannot create order-products ".concat(err_3));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Order.prototype.delete_order_products = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var conn, sql, result, err_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1["default"].connect()];
+                    case 1:
+                        conn = _a.sent();
+                        sql = 'DELETE * FROM order_products WHERE id = ($1)';
+                        return [4 /*yield*/, conn.query(sql, [id])];
+                    case 2:
+                        result = _a.sent();
+                        conn.release();
+                        return [2 /*return*/, result.rows[0]];
+                    case 3:
+                        err_4 = _a.sent();
+                        throw new Error("Cannot create order-products ".concat(err_4));
                     case 4: return [2 /*return*/];
                 }
             });

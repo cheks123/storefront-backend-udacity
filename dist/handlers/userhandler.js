@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.authenticateUser = exports.createUser = exports.getUser = exports.getUsers = void 0;
+exports.authenticateUser = exports.deleteUser = exports.createUser = exports.getUser = exports.getUsers = void 0;
 var user_1 = require("../models/user");
 var dotenv_1 = __importDefault(require("dotenv"));
 var authentication_1 = require("../utils/authentication");
@@ -102,6 +102,7 @@ var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
             case 1:
                 newUser = _a.sent();
                 token = (0, authentication_1.createJWT)(newUser);
+                res.header("auth-token", token);
                 res.json(token);
                 return [3 /*break*/, 3];
             case 2:
@@ -114,6 +115,27 @@ var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, 
     });
 }); };
 exports.createUser = createUser;
+var deleteUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var del_user, err_4;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, user["delete"](req.params.id)];
+            case 1:
+                del_user = _a.sent();
+                res.json(del_user);
+                return [3 /*break*/, 3];
+            case 2:
+                err_4 = _a.sent();
+                res.status(400);
+                res.json(err_4);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.deleteUser = deleteUser;
 var authenticateUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var user_to_authenticate, authenticatedUser, token, error_1;
     return __generator(this, function (_a) {
@@ -130,6 +152,7 @@ var authenticateUser = function (req, res) { return __awaiter(void 0, void 0, vo
             case 2:
                 authenticatedUser = _a.sent();
                 token = (0, authentication_1.createJWT)(authenticatedUser);
+                res.header("auth-token", token);
                 res.json(token);
                 return [3 /*break*/, 4];
             case 3:

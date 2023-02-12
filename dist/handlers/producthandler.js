@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.createProduct = exports.getProduct = exports.getProducts = void 0;
+exports.deleteProduct = exports.createProduct = exports.getProduct = exports.getProducts = void 0;
 var product_1 = require("../models/product");
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1["default"].config();
@@ -111,3 +111,24 @@ var createProduct = function (req, res) { return __awaiter(void 0, void 0, void 
     });
 }); };
 exports.createProduct = createProduct;
+var deleteProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var single_product, err_4;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, product["delete"](req.params.id)];
+            case 1:
+                single_product = _a.sent();
+                res.json(single_product);
+                return [3 /*break*/, 3];
+            case 2:
+                err_4 = _a.sent();
+                res.status(400);
+                res.json(err_4);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.deleteProduct = deleteProduct;

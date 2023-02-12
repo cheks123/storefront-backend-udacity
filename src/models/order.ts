@@ -42,8 +42,8 @@ export class Order{
     async order_products(o:orderProductType):Promise<orderType>{
         try{
             const conn = await client.connect()
-            const sql = 'INSERT INTO order_products (user_id, product_id, quantity) VALUES($1, $2, $3) RETURNING *'
-            const result = await conn.query(sql, [o.user_id, o.product_id, o.quantity])
+            const sql = 'INSERT INTO order_products (order_id, product_id, quantity) VALUES($1, $2, $3) RETURNING *'
+            const result = await conn.query(sql, [o.order_id, o.product_id, o.quantity])
             conn.release()
             return result.rows[0]
         }
@@ -55,7 +55,20 @@ export class Order{
     async delete_order_products(id:string):Promise<orderProductTypeId>{
         try{
             const conn = await client.connect()
-            const sql = 'DELETE * FROM order_products WHERE id = ($1)'
+            const sql = 'DELETE FROM order_products WHERE id = ($1)'
+            const result = await conn.query(sql, [id])
+            conn.release()
+            return result.rows[0]
+        }
+        catch(err){
+            throw new Error(`Cannot create order-products ${err}`)
+        }
+    }
+
+    async delete_order(id:string):Promise<orderProductTypeId>{
+        try{
+            const conn = await client.connect()
+            const sql = 'DELETE FROM orders WHERE id = ($1)'
             const result = await conn.query(sql, [id])
             conn.release()
             return result.rows[0]

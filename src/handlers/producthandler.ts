@@ -12,7 +12,8 @@ const product = new Products()
 export const getProducts = async(_req:Request, res:Response) =>{
     try{
         const products:createdProduct[] = await product.index()
-        res.json(products)}
+        res.json(products)
+    }
     catch(err){
         res.status(400)
         res.json(err)

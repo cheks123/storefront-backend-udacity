@@ -1,7 +1,7 @@
 import supertest from "supertest"
 import app from "../../server"
 import jwt, { Secret} from "jsonwebtoken"
-import { userType } from "../../interfaces/user"
+import { userType } from "../../interfaces/user" 
 
 
 const request = supertest(app)
@@ -9,6 +9,7 @@ const userData:userType = {first_name:"James", last_name: "Manager", password: "
 const TOKEN_SECRET = process.env.TOKEN_SECRET as Secret
 let userId:number
 let token:string
+let status:number
 
 describe("User handler test", ()=>{
     it("should require authorization", (done)=>{
@@ -22,44 +23,40 @@ describe("User handler test", ()=>{
         })
     })
 
-    it("should create user", (done)=>{
-        request.post('/users').send(userData).then((res)=>{
-            const {body, status} = res
-            token = body
+    it("should create user", async (done)=>{
+        
+        const response = await request.post('/users').send(userData);
+        token = response.body
+        expect(response.status).toBe(200);
+        const verified_obj = jwt.verify(token, TOKEN_SECRET)
+        //@ts-ignore
+        userId = verified_obj.user.id
 
-            // @ts-ignore
-            const {user} = jwt.verify(token, TOKEN_SECRET)
-            userId = user.id
-
-            expect(status).toBe(200)
-            done()
-        })
+        
+        done()
+        
     })
 
-    it("should gets all the users", (done)=>{
-        request.get('/users')
-        .set('Authorization', 'bearer ' + token)
-        .then((res) =>{
-            expect(res.status).toBe(200)
-            done()
-        })
+    it("should gets all the users", async (done)=>{
+        const response = await request.get('/users').set('auth-token', token)
+        
+        expect(response.status).toBe(200)
+        done()
+        
     })
 
-    it("should get user details", (done)=>{
-        request.get(`/users/${userId}`)
-        .set('Authorization', 'bearer ' + token)
-        .then((res) =>{
-            expect(res.status).toBe(200)
-            done()
-        })
+    it("should get user details", async (done)=>{
+        const response = await request.get(`/users/${userId}`).set('auth-token', token)
+        expect(response.status).toBe(200)
+        done()
+    
     })
 
-    it("should delete user", (done)=>{
-        request.delete(`/users/${userId}`)
-        .set('Authorization', 'bearer ' + token)
-        .then((res)=>{
-            expect(res.status).toBe(200)
-        })
+    it("should delete user", async (done)=>{
+        const response = await request.delete(`/users/${userId}`).set('auth-token', token)
+        expect(response.status).toBe(200)
+        done()
+        
     })
 
 })

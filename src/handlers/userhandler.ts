@@ -13,10 +13,12 @@ const user = new Users()
 
 
 export const getUsers = async(req:Request, res:Response) =>{
+    
 
     try{
         const users = await user.index()
         res.json(users)
+        
     }
     catch(err){
         res.status(400)
@@ -49,6 +51,7 @@ export const createUser = async(req:Request, res:Response) =>{
 
         const newUser = await user.create(user_to_create)
         var token = createJWT(newUser)
+        res.header("auth-token", token)
         res.json(token)
         
     }
@@ -81,6 +84,7 @@ export const authenticateUser = async(req:Request, res:Response) =>{
     try{
         const authenticatedUser: userTypeId | null = await user.authenticate(user_to_authenticate.username, user_to_authenticate.password)
         var token = createJWT(authenticatedUser)
+        res.header("auth-token", token)
         res.json(token)
     }
 

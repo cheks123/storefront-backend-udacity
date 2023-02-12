@@ -53,11 +53,15 @@ export class Users{
 
     async delete(id:string):Promise<userTypeId>{
         try{
+            const sql = 'DELETE FROM users WHERE id = ($1)'
+
+            //@ts-ignore
             const conn = await client.connect()
-            const sql = 'DELETE * FROM users WHERE id = ($1)'
+            
             const result = await conn.query(sql, [id])
+            const user:userTypeId = result.rows[0]
             conn.release()
-            return result.rows[0]
+            return user
 
         }
         catch(err){

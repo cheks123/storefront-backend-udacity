@@ -6,21 +6,22 @@ exports.__esModule = true;
 exports.authorize = void 0;
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var authorize = function (req, res, next) {
-    if (!req.headers.authorization) {
+    var token = req.header("auth-token");
+    if (!token) {
         res.status(401);
-        res.json("Invalid token");
+        res.json("Access Denied");
         return false;
     }
     try {
-        var authorizationHeader = req.headers["authorization"];
-        var token = authorizationHeader.split(' ')[1];
-        jsonwebtoken_1["default"].verify(token, process.env.TOKEN_SECRET);
+        var verified = jsonwebtoken_1["default"].verify(token, process.env.TOKEN_SECRET);
+        //@ts-ignore
+        req.user = verified;
         next();
     }
     catch (error) {
         console.log(error);
         res.status(401);
-        res.json({ error: error });
+        res.send("Invalid token");
         return false;
     }
 };

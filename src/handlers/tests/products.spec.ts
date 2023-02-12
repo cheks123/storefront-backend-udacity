@@ -9,7 +9,7 @@ const request = supertest(app)
 const TOKEN_SECRET = process.env.TOKEN_SECRET as Secret
 
 const userData:userType = {first_name:"Charles", last_name:"Okoh", password:"123456"}
-const productData:productType = {name:"iphone", price:399}
+const productData:productType = {name:"Nokia", price:397}
 let token:string
 let userId:number
 let productId:number
@@ -17,53 +17,48 @@ let productId:number
 
 describe("Product Handler", ()=>{
     beforeAll(async ()=>{
-        const {body} = await request.post('/users').send(userData)
-        token = body
+        const response = await request.post('/users').send(userData)
+        token = response.body
+
+        const verified_obj = jwt.verify(token, TOKEN_SECRET)
 
         //@ts-ignore
-        const {user} = jwt.verify(token, TOKEN_SECRET)
-        userId = user.id
+        userId = verified_obj.user.id
     })
 
     afterAll(async()=>{
-        await request.delete(`/users/${userId}`)
-        .set("Authorization", "bearer " + token)
+        await request.delete(`/users/${userId}`).set("auth-token", token)
     })
 
-    it("should create product",  (done) =>{
-        request.post('/products').send(productData)
-        .set('Authorization', 'bearer ' + token)
-        .then((res)=>{
-            const {body, status} = res
+    it("should create product",  async (done) =>{
+        const response = await request.post('/products').send(productData).set('auth-token', token)
+        let status = response.status
+        
             expect(status).toBe(200)
-            productId = body.id
+            productId = response.body.id
             done()
-        })
+        
     })
     
-    it("should get all products", (done)=>{
-        request.get('/products')
-        .then(res =>{
-            expect(res.status).toBe(200)
-            done()
-        })
+    it("should get all products", async (done)=>{
+        const response = await request.get('/products')
+        expect(response.status).toBe(200)
+        done()
+        
     })
 
-    it("it should get product by id", (done)=>{
-        request.get(`/products/${productId}`)
-        .then(res=>{
-            expect(res.status).toBe(200)
-            done()
-        })
+    it("it should get product by id", async (done)=>{
+        const response = await request.get(`/products/${productId}`)
+        expect(response.status).toBe(200)
+        done()
+        
     })
 
-    it("it should delete products", (done)=>{
-        request.delete(`/products/${productId}`)
-        .set("Authorization", "bearer " + token)
-        .then(res=>{
-            expect(res.status).toBe(200)
-            done()
-        })
+    it("it should delete products", async (done)=>{
+        const response = await request.delete(`/products/${productId}`).set("auth-token", token)
+        expect(response.status).toBe(200)
+        done()
+        
     })
 })
 

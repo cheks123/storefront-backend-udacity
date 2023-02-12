@@ -12,9 +12,9 @@ export type orderType = {
 }
 
 export type orderProductType = {
+    order_id : number;
     product_id: number;
     quantity : number;
-    user_id : number;
     
 }
 

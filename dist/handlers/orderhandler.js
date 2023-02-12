@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.orderProduct = exports.createOrder = exports.getCurrentOrders = exports.getOrders = void 0;
+exports.deleteOrderProduct = exports.orderProduct = exports.createOrder = exports.getCurrentOrders = exports.getOrders = void 0;
 var order_1 = require("../models/order");
 var order = new order_1.Order();
 var getOrders = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -136,3 +136,24 @@ var orderProduct = function (req, res) { return __awaiter(void 0, void 0, void 0
     });
 }); };
 exports.orderProduct = orderProduct;
+var deleteOrderProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var single_order, err_5;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, order.delete_order_products(req.params.id)];
+            case 1:
+                single_order = _a.sent();
+                res.json(single_order);
+                return [3 /*break*/, 3];
+            case 2:
+                err_5 = _a.sent();
+                res.status(400);
+                res.json(err_5);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.deleteOrderProduct = deleteOrderProduct;

@@ -7,5 +7,6 @@ var userRouter = function (app) {
     app.get('/users/:id', authorization_1.authorize, userhandler_1.getUser);
     app.post('/users', userhandler_1.createUser);
     app.post('/users/authenticate', userhandler_1.authenticateUser);
+    app["delete"]('/users/:id', authorization_1.authorize, userhandler_1.deleteUser);
 };
 exports["default"] = userRouter;

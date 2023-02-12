@@ -6,5 +6,6 @@ var productRouter = function (app) {
     app.get('/products', producthandler_1.getProducts);
     app.get('/products/:id', producthandler_1.getProduct);
     app.post('/products', authorization_1.authorize, producthandler_1.createProduct);
+    app["delete"]('/products/:id', authorization_1.authorize, producthandler_1.deleteProduct);
 };
 exports["default"] = productRouter;
